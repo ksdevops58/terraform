@@ -229,6 +229,36 @@ resource "aws_vpc_security_group_ingress_rule" "ibm_web_sg_HTTP" {
   to_port           = 80
 }
 
+#App security group
+resource "aws_security_group" "ibm_app_sg" {
+  name        = "ibm_app_sg"
+  description = "Allow SSH and 8080 traffic"
+  vpc_id      = aws_vpc.ibm_vpc.id
+
+  tags = {
+    Name = "ibm-app-firewall"
+  }
+}
+
+#web Security Group Rule - SSH
+
+resource "aws_vpc_security_group_ingress_rule" "ibm_app_sg_ssh" {
+  security_group_id = aws_security_group.ibm_app_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 22
+  ip_protocol       = "tcp"
+  to_port           = 22
+}
+
+#web Security Group Rule - HTTP
+
+resource "aws_vpc_security_group_ingress_rule" "ibm_app_sg_8080" {
+  security_group_id = aws_security_group.ibm_app_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 8080
+  ip_protocol       = "tcp"
+  to_port           = 8080
+}
 
 
 
