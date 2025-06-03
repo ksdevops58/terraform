@@ -130,9 +130,9 @@ resource "aws_network_acl_association" "ibm_web_nacl_association" {
   subnet_id      = aws_subnet.ibm_web_sn.id
 }
 
-#create NACL's
-resource "aws_network_acl" "ibm_app_nacl" {
-  vpc_id = aws_vpc.ibm_vpc.id
+#create web NACL's
+ resource "aws_network_acl" "ibm_app_nacl" {
+   vpc_id = aws_vpc.ibm_vpc.id
 
   egress {
     protocol   = "tcp"
@@ -140,9 +140,10 @@ resource "aws_network_acl" "ibm_app_nacl" {
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 0
-    to_port    = 65535#create NACL's
-resource "aws_network_acl" "ibm_app_nacl" {
-  vpc_id = aws_vpc.ibm_vpc.id
+    to_port    = 65535
+#create App NACL's
+ resource "aws_network_acl" "ibm_app_nacl" {
+   vpc_id = aws_vpc.ibm_vpc.id
 
   egress {
     protocol   = "tcp"
@@ -169,9 +170,9 @@ resource "aws_network_acl" "ibm_app_nacl" {
 }
 
 # Web NACl association with Web subnet
-resource "aws_network_acl_association" "ibm_app_nacl_association" {
-  network_acl_id = aws_network_acl.ibm_app_nacl.id
-  subnet_id      = aws_subnet.ibm_app_sn.id
+ resource "aws_network_acl_association" "ibm_app_nacl_association" {
+   network_acl_id = aws_network_acl.ibm_app_nacl.id
+   subnet_id      = aws_subnet.ibm_app_sn.id
 }
 
   }
