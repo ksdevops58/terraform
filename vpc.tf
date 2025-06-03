@@ -34,3 +34,24 @@ resource "aws_subnet" "ibm_DB_sn" {
   }
 }
 
+# create subnet for Application servers temporary
+resource "aws_subnet" "ibm_app_sn" {
+  vpc_id     = aws_vpc.ibm_vpc.id
+  cidr_block = "10.0.3.0/24"
+  availability_zone = "us-west-2b"
+  map_public_ip_on_launch = "true"
+
+  tags = {
+    Name = "ibm-app-subnet"
+  }
+}
+
+
+# create Internet gate way
+resource "aws_internet_gateway" "ibm_igw" {
+  vpc_id = aws_vpc.ibm_vpc.id
+
+  tags = {
+    Name = "ibm-internet-gateway"
+  }
+}
