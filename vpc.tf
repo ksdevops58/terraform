@@ -96,7 +96,7 @@ resource "aws_route_table_association" "ibm_DB_rt" {
   route_table_id = aws_route_table.ibm_pvt_rt.id
 }
 
-#create NACL's
+#create web NACL's
 resource "aws_network_acl" "ibm_web_nacl" {
   vpc_id = aws_vpc.ibm_vpc.id
 
@@ -125,23 +125,12 @@ resource "aws_network_acl" "ibm_web_nacl" {
 }
 
 # Web NACl association with Web subnet
-resource "aws_network_acl_association" "ibm_web_nacl_association" {
-  network_acl_id = aws_network_acl.ibm_web_nacl.id
-  subnet_id      = aws_subnet.ibm_web_sn.id
+ resource "aws_network_acl_association" "ibm_web_nacl_association" {
+   network_acl_id = aws_network_acl.ibm_web_nacl.id
+   subnet_id      = aws_subnet.ibm_web_sn.id
 }
 
-#create web NACL's
- resource "aws_network_acl" "ibm_app_nacl" {
-   vpc_id = aws_vpc.ibm_vpc.id
-
-  egress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 65535
-#create App NACL's
+#create app NACL's
  resource "aws_network_acl" "ibm_app_nacl" {
    vpc_id = aws_vpc.ibm_vpc.id
 
@@ -175,34 +164,9 @@ resource "aws_network_acl_association" "ibm_web_nacl_association" {
    subnet_id      = aws_subnet.ibm_app_sn.id
 }
 
-  }
-
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-     cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 65535
-
-  }
-
-  tags = {
-    Name = "ibm-app-nacl"
-  }
-}
-
-# Web NACl association with Web subnet
-resource "aws_network_acl_association" "ibm_app_nacl_association" {
-  network_acl_id = aws_network_acl.ibm_app_nacl.id
-  subnet_id      = aws_subnet.ibm_app_sn.id
-}
-
-
-
-#create NACL's
-resource "aws_network_acl" "ibm_DB_nacl" {
-  vpc_id = aws_vpc.ibm_vpc.id
+#create DB NACL's
+ resource "aws_network_acl" "ibm_DB_nacl" {
+   vpc_id = aws_vpc.ibm_vpc.id
 
   egress {
     protocol   = "tcp"
@@ -211,15 +175,15 @@ resource "aws_network_acl" "ibm_DB_nacl" {
     cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 65535
-  }
+ }
 
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-     cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 65535
+ ingress {
+   protocol   = "tcp"
+   rule_no    = 100
+   action     = "allow"
+   cidr_block = "0.0.0.0/0"
+   from_port  = 0
+   to_port    = 65535
 
   }
 
@@ -228,9 +192,10 @@ resource "aws_network_acl" "ibm_DB_nacl" {
   }
 }
 
-# Web NACl association with  subnet
-resource "aws_network_acl_association" "ibm_DB_nacl_association" {
-  network_acl_id = aws_network_acl.ibm_DB_nacl.id
-  subnet_id      = aws_subnet.ibm_DB_sn.id
+# Web NACl association with Web subnet
+ resource "aws_network_acl_association" "ibm_DB_nacl_association" {
+   network_acl_id = aws_network_acl.ibm_DB_nacl.id
+   subnet_id      = aws_subnet.ibm_DB_sn.id
 }
+
 
