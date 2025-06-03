@@ -124,7 +124,11 @@ resource "aws_network_acl" "ibm_web_nacl" {
   }
 }
 
-
+# Web NACl association with Web subnet
+resource "aws_network_acl_association" "ibm_web_nacl_association" {
+  network_acl_id = aws_network_acl.ibm_web_nacl.id
+  subnet_id      = aws_subnet.ibm_web_sn.id
+}
 
 
 
